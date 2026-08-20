@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rehabilitación de Tobillo - Programa de Ejercicios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fuente -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at top left, #e0f7fa, #e8eaf6 40%, #fce4ec);
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Pantalla inicial */
+    #startScreen {
+      width: 90%;
+      max-width: 900px;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      animation: fadeIn 0.6s ease;
+    }
+    #startScreen h1 {
+      font-size: 2rem;
+      color: #1a237e;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    #startScreen h2 {
+      font-size: 1.2rem;
+      margin-top: 20px;
+      color: #283593;
+    }
+    #startScreen ul {
+      margin-top: 10px;
+      margin-left: 20px;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+    #startScreen p {
+      font-size: 0.95rem;
+      margin-top: 8px;
+    }
+    #startScreen button {
+      margin-top: 30px;
+      display: block;
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      background: #3949ab;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    #startScreen button:hover {
+      background: #283593;
+    }
+
+    /* Pantalla final */
+    #endScreen {
+      display: none;
+      width: 90%;
+      max-width: 900px;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+    #endScreen h1 {
+      font-size: 2rem;
+      color: #2e7d32;
+      margin-bottom: 20px;
+    }
+    #endScreen p {
+      font-size: 1.05rem;
+      margin-bottom: 30px;
+    }
+    #endScreen button {
+      padding: 12px 20px;
+      margin: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    #endScreen .btn-primary {
+      background: #3949ab;
+      color: white;
+    }
+    #endScreen .btn-primary:hover {
+      background: #283593;
+    }
+    #endScreen .btn-secondary {
+      background: #e0e0e0;
+      color: #333;
+    }
+    #endScreen .btn-secondary:hover {
+      background: #bdbdbd;
+    }
+
+    /* App principal */
+    #appContainer {
+      display: none;
+      width: 100%;
+      max-width: 1200px;
+      margin: 20px auto;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .app-inner {
+      display: flex;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 30%;
+      background: linear-gradient(180deg, #283593, #1a237e);
+      color: #fff;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .sidebar h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    .sidebar p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    .exercise-list {
+      margin-top: 10px;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .exercise-item {
+      padding: 10px 12px;
+      margin-bottom: 6px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .exercise-item span { max-width: 80%; }
+    .exercise-item small {
+      opacity: 0.8;
+      font-size: 0.7rem;
+    }
+    .exercise-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-1px);
+    }
+    .exercise-item.active {
+      background: #ffca28;
+      color: #1a237e;
+      font-weight: 600;
+    }
+
+    .main {
+      width: 70%;
+      padding: 20px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .top-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.08s, box-shadow 0.08s, background 0.2s;
+    }
+    .btn:active { transform: translateY(1px); box-shadow: none; }
+    .btn-primary {
+      background: #3949ab;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(57, 73, 171, 0.4);
+    }
+    .btn-secondary { background: #e0e0e0; color: #333; }
+    .btn-outline { background: transparent; border: 1px solid #9e9e9e; color: #424242; }
+
+    .card {
+      background: #fafafa;
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      color: #3949ab;
+    }
+    .card p {
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .image-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .image-wrapper img {
+      max-width: 100%;
+      max-height: 220px;
+      border-radius: 12px;
+      object-fit: contain;
+      border: 1px solid #e0e0e0;
+      background: #fff;
+    }
+
+    .meta-list {
+      list-style: none;
+      margin-top: 6px;
+      font-size: 0.85rem;
+    }
+    .meta-list li { margin-bottom: 4px; }
+    .meta-label { font-weight: 600; color: #1a237e; }
+
+    .timer-display {
+      font-size: 2.4rem;
+      font-weight: 600;
+      text-align: center;
+      margin: 10px 0 2px;
+      color: #1a237e;
+    }
+    #phaseText, #progressInfo, #statusBar {
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 4px;
+    }
+    #statusBar { opacity: 0.8; }
+
+    .next-exercise-card {
+      background: #f3e5f5;
+    }
+    .next-exercise-card h2 { color: #6a1b9a; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 900px) {
+      #appContainer { margin: 0; border-radius: 0; }
+      .app-inner { flex-direction: column; }
+      .sidebar, .main { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Pantalla inicial -->
+<div id="startScreen">
+  <h1>Programa de Rehabilitación de Tobillo</h1>
+  <p>Esta aplicación te guiará paso a paso por una rutina completa de ejercicios de tobillo, con ilustraciones, temporizadores, descansos y sonidos para marcar cada fase.</p>
+
+  <h2>Finalidad de la aplicación</h2>
+  <p>Facilitar la realización de un programa estructurado de ejercicios de tobillo-pie, ayudándote a seguir el orden, los tiempos y las repeticiones recomendadas.</p>
+
+  <h2>Recomendaciones</h2>
+  <ul>
+    <li>Realiza los ejercicios en un lugar tranquilo, con espacio suficiente y sin obstáculos.</li>
+    <li>Evita el dolor agudo. Si aparece, detén la sesión y consulta con tu profesional sanitario.</li>
+    <li>Haz los movimientos de forma lenta, controlada y sin rebotes.</li>
+    <li>Respira con normalidad y evita contener la respiración.</li>
+    <li>Si necesitas apoyo, utiliza una silla, pared o barandilla estable.</li>
+  </ul>
+
+  <h2>Material necesario</h2>
+  <ul>
+    <li>Toalla</li>
+    <li>Banda elástica</li>
+    <li>Cojín o superficie inestable</li>
+    <li>Pelota ligera</li>
+    <li>Pared y/o escalón</li>
+  </ul>
+
+  <button onclick="goToRoutine()">Ir a la rutina</button>
+</div>
+
+<!-- Pantalla final -->
+<div id="endScreen">
+  <h1>Programa completado</h1>
+  <p>Has terminado todos los ejercicios. Puedes reiniciar si quieres repetir la sesión.</p>
+  <button class="btn-primary" onclick="restartRoutine(true)">Iniciar</button>
+  <button class="btn-secondary" onclick="restartRoutine(false)">Reiniciar</button>
+</div>
+
+<!-- Aplicación principal -->
+<div id="appContainer">
+  <div class="app-inner">
+    <aside class="sidebar">
+      <div>
+        <h2>Ejercicios</h2>
+        <p>Selecciona un ejercicio o sigue el orden propuesto.</p>
+      </div>
+      <div class="exercise-list" id="exerciseList"></div>
+    </aside>
+
+    <main class="main">
+      <div class="top-controls">
+        <button class="btn btn-primary" id="btnStartPause">Iniciar</button>
+        <button class="btn btn-secondary" id="btnReset">Reiniciar</button>
+        <button class="btn btn-outline" id="btnPrev">⟵ Anterior</button>
+        <button class="btn btn-outline" id="btnNext">Siguiente ⟶</button>
+      </div>
+
+      <section class="card">
+        <h2 id="currentExerciseTitle">Selecciona un ejercicio para empezar</h2>
+        <p id="currentExerciseDescription">Elige un ejercicio de la lista de la izquierda o pulsa “Iniciar” para comenzar desde el primero.</p>
+        <div class="image-wrapper">
+          <img id="currentExerciseImage" src="" alt="Ejercicio actual" style="display:none;">
+        </div>
+        <ul class="meta-list" id="currentMeta"></ul>
+        <div class="timer-display" id="timerDisplay">00</div>
+        <div id="phaseText"></div>
+        <div id="progressInfo"></div>
+        <div id="statusBar">Listo.</div>
+      </section>
+
+      <section class="card next-exercise-card" id="nextExerciseCard">
+        <h2>Siguiente ejercicio</h2>
+        <p id="nextExerciseDescription">Cuando termines el ejercicio actual, aquí verás el siguiente.</p>
+        <div class="image-wrapper">
+          <img id="nextExerciseImage" src="" alt="Siguiente ejercicio" style="display:none;">
+        </div>
+        <ul class="meta-list" id="nextMeta"></ul>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+  // ==========================
+  // CONFIGURACIÓN DE EJERCICIOS
+  // ==========================
+  const exercises = [
+    {
+      id: 1,
+      key: "flexion_plantar_dorsal_activa",
+      name: "Flexión plantar y dorsal activa",
+      description:
+        "Realizar un movimiento con el tobillo de modo que el pie se desplace hacia abajo (flexión plantar) y mantener la posición final unos 5 segundos. Tras 10 repeticiones, mover el tobillo de modo que el pie se desplace hacia arriba (flexión dorsal) y mantener la posición 5 segundos.",
+      image: "01_flexion_plantar_dorsal.png",
+      series: 1,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Sin material",
+      position: "Sentado o tumbado, con el tobillo libre."
+    },
+    {
+      id: 2,
+      key: "flexion_dorsal_activa",
+      name: "Flexión dorsal activa",
+      description:
+        "Realizar un movimiento con el tobillo de modo que el pie se desplace hacia arriba y mantener la posición final unos 5 segundos.",
+      image: "02_flexion_dorsal_activa.png",
+      series: 1,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Sin material",
+      position: "Sentado o tumbado, con el tobillo libre."
+    },
+    {
+      id: 3,
+      key: "inversion_activa",
+      name: "Inversión activa",
+      description:
+        "Realizar un movimiento con el tobillo de modo que la planta del pie quede dirigida hacia la parte interna (hacia el otro pie) y mantener la posición final unos 5 segundos.",
+      image: "03_inversion_activa.png",
+      series: 1,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Sin material",
+      position: "Sentado, con el pie libre para girar hacia dentro."
+    },
+    {
+      id: 4,
+      key: "eversion_activa",
+      name: "Eversión activa",
+      description:
+        "Realizar un movimiento con el tobillo de modo que la planta del pie quede mirando hacia la parte externa (en dirección opuesta al otro pie) y mantener la posición final unos cinco segundos.",
+      image: "04_eversion_activa.png",
+      series: 1,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Sin material",
+      position: "Sentado, con el pie libre para girar hacia fuera."
+    },
+    {
+      id: 5,
+      key: "arrastre_toalla",
+      name: "Arrastre de toalla en suelo",
+      description:
+        "Recoger la toalla arrugándola en dirección al talón, flexionando y estirando los dedos, sin despegar el talón del suelo.",
+      image: "05_arrastre_toalla_suelo.png",
+      series: 1,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Toalla en el suelo",
+      position: "Sentado, con el pie apoyado en el suelo sobre la toalla."
+    },
+    {
+      id: 6,
+      key: "flexion_extension_dedos",
+      name: "Flexión y extensión activa de dedos",
+      description:
+        "Realizar una flexión y extensión simultánea de todos los dedos del pie manteniendo toda la planta bien apoyada. Mantener la posición a final de cada rango unos 5 segundos.",
+      image: "06_flexion_extension_activa_dedos.png",
+      series: 1,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Sin material",
+      position: "Sentado, con el pie apoyado en el suelo."
+    },
+    {
+      id: 7,
+      key: "isometrico_flexion_plantar",
+      name: "Isométrico en flexión plantar",
+      description:
+        "Sentado, descalzo, con los pies apoyados. Empujar contra el suelo intentando realizar flexión plantar del tobillo. Mantener 5 segundos y volver a la posición inicial.",
+      image: "07_isometrico_flexion_plantar.png",
+      series: 2,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Sin material",
+      position: "Sentado, con el pie apoyado en el suelo."
+    },
+    {
+      id: 8,
+      key: "isometrico_flexion_dorsal",
+      name: "Isométrico en flexión dorsal",
+      description:
+        "Sentado, descalzo, con el pie apoyado. Empujar con el dorso del pie contra la planta del pie sano. Mantener 5 segundos y volver a la posición inicial.",
+      image: "08_isometrico_flexion_dorsal.png",
+      series: 2,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Sin material (usa el otro pie como resistencia)",
+      position: "Sentado, con ambos pies en contacto."
+    },
+    {
+      id: 9,
+      key: "isometrico_eversion",
+      name: "Isométrico en eversión",
+      description:
+        "Sentado descalzo, con los pies apoyados. Realizar flexión dorsal ligera del tobillo y empujar con la parte externa del pie contra la pata de la mesa. Mantener 5 segundos y volver a la posición inicial.",
+      image: "09_isometrico_eversion.png",
+      series: 2,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Pata de una mesa o superficie firme",
+      position: "Sentado, con el pie apoyado y en contacto lateral con la mesa."
+    },
+    {
+      id: 10,
+      key: "isometrico_inversion",
+      name: "Isométrico en inversión",
+      description:
+        "Sentado descalzo, con los pies apoyados. Realizar flexión dorsal ligera de tobillo y empujar con la parte interna del pie contra la pata de la mesa. Mantener 5 segundos y volver a la posición inicial.",
+      image: "10_isometrico_inversion.png",
+      series: 2,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Pata de una mesa o superficie firme",
+      position: "Sentado, con el pie apoyado y en contacto interno con la mesa."
+    },
+    {
+      id: 11,
+      key: "flexion_dorsal_banda",
+      name: "Flexión dorsal con banda",
+      description:
+        "Sentado, descalzo, con los pies apoyados y una banda elástica alrededor del antepié. Realizar flexión dorsal contra la resistencia de la banda. Mantener 5 segundos y volver a la posición inicial.",
+      image: "11_flexion_dorsal_banda.png",
+      series: 2,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Banda elástica",
+      position: "Sentado, con el pie sujeto por la banda."
+    },
+    {
+      id: 12,
+      key: "eversion_banda",
+      name: "Eversión con banda",
+      description:
+        "Sentado, descalzo, con los pies apoyados y una banda elástica alrededor del antepié afectado. Realizar eversión contra la resistencia de la banda. Mantener 5 segundos y volver a la posición inicial.",
+      image: "12_eversion_banda.png",
+      series: 2,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Banda elástica",
+      position: "Sentado, con el pie sujeto por la banda."
+    },
+    {
+      id: 13,
+      key: "elevacion_ambos_talones",
+      name: "Elevación de ambos talones del suelo",
+      description:
+        "Ponerse de puntillas con ambos pies sin flexionar las rodillas. Mantener 5 segundos y volver a la posición inicial.",
+      image: "13_elevacion_ambos_talones.png",
+      series: 1,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Sin material",
+      position: "De pie, con ambos pies apoyados."
+    },
+    {
+      id: 14,
+      key: "elevacion_un_talon",
+      name: "Elevación de un talón del suelo",
+      description:
+        "Ponerse de puntillas sobre un pie sin flexionar la rodilla. Mantener 5 segundos y volver a la posición inicial.",
+      image: "14_elevacion_un_talon.png",
+      series: 1,
+      reps: 30,
+      secondsPerRep: 5,
+      material: "Sin material (puede usarse apoyo en pared para equilibrio)",
+      position: "De pie, apoyado sobre un solo pie."
+    },
+    {
+      id: 15,
+      key: "estiramiento_triceps_escalon",
+      name: "Estiramiento de tríceps sural en escalón",
+      description:
+        "Se apoya la parte media y anterior del pie del lado afectado en el borde del escalón. Descender el talón dejando caer el peso del cuerpo sobre él. Mantener 10-30 segundos.",
+      image: "15_estiramiento_triceps_escalon.png",
+      series: 1,
+      reps: 5,
+      secondsPerRep: 20,
+      material: "Escalón o superficie elevada",
+      position: "De pie, con el pie afectado en el borde del escalón."
+    },
+    {
+      id: 16,
+      key: "excentrico_triceps_escalon",
+      name: "Excéntrico de tríceps sural monopodal en escalón",
+      description:
+        "Se apoya la parte media y anterior del pie en el borde del escalón. Con la rodilla extendida, descender el talón dejando caer el peso del cuerpo sobre él. Mantener unos 10 segundos. Utilizar el otro pie para volver a la posición inicial.",
+      image: "16_excentrico_triceps_escalon.png",
+      series: 1,
+      reps: 15,
+      secondsPerRep: 10,
+      material: "Escalón o superficie elevada",
+      position: "De pie, con el pie afectado en el borde del escalón."
+    },
+    {
+      id: 17,
+      key: "estiramiento_triceps_pared",
+      name: "Estiramiento de tríceps sural frente a pared",
+      description:
+        "El pie del lado afectado colocado detrás con la rodilla extendida. Flexionar los codos y la cadera y la rodilla de la pierna de delante sin mover la otra ni despegar el talón del suelo. Mantener 10-30 segundos.",
+      image: "17_estiramiento_triceps_pared.png",
+      series: 1,
+      reps: 5,
+      secondsPerRep: 20,
+      material: "Pared",
+      position: "De pie, en zancada frente a una pared."
+    },
+    {
+      id: 18,
+      key: "estiramiento_soleo_pared",
+      name: "Estiramiento de sóleo frente a pared",
+      description:
+        "El pie del lado afectado colocado detrás con la rodilla algo flexionada. Flexionar los codos y la cadera y la rodilla de la pierna de delante sin mover la otra ni despegar el talón del suelo. Mantener 10-30 segundos.",
+      image: "18_estiramiento_soleo_pared.png",
+      series: 1,
+      reps: 5,
+      secondsPerRep: 20,
+      material: "Pared",
+      position: "De pie, en zancada frente a una pared con rodilla de atrás algo flexionada."
+    },
+    {
+      id: 19,
+      key: "apoyo_pie_suelo",
+      name: "Apoyo de un pie en suelo",
+      description:
+        "De pie, descalzo, con el pie afectado apoyado en el suelo mientras la extremidad sana realiza flexión de rodilla. Mantener 5 segundos y volver a la posición inicial.",
+      image: "19_apoyo_pie_suelo.png",
+      series: 2,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Sin material",
+      position: "De pie, con el pie afectado apoyado en el suelo."
+    },
+    {
+      id: 20,
+      key: "apoyo_pie_cojin",
+      name: "Apoyo pie en cojín",
+      description:
+        "De pie, descalzo, con el pie afectado apoyado en un cojín mientras la extremidad sana realiza flexión de rodilla. Mantener 5 segundos y volver a la posición inicial.",
+      image: "20_apoyo_pie_cojin.png",
+      series: 2,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Cojín o superficie inestable",
+      position: "De pie, con el pie afectado sobre un cojín."
+    },
+    {
+      id: 21,
+      key: "apoyo_cojin_desequilibrios",
+      name: "Apoyo pie en cojín con desequilibrios",
+      description:
+        "De pie, descalzo, con el pie afectado apoyado en un cojín mientras la extremidad sana mantiene la rodilla en flexión y se pasa un objeto de una mano a otra por delante y detrás del cuerpo de 5 a 10 veces.",
+      image: "21_apoyo_cojin_desequilibrios.png",
+      series: 2,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Cojín y objeto ligero (pelota, botella, etc.)",
+      position: "De pie, con el pie afectado sobre un cojín."
+    },
+    {
+      id: 22,
+      key: "apoyo_cojin_resistencia",
+      name: "Apoyo pie en cojín con desequilibrios/resistencia",
+      description:
+        "De pie, descalzo, con el pie afectado apoyado en un cojín mientras el pie del lado contrario se mantiene sin apoyo, rodeado por una banda elástica y se desplaza hacia delante y hacia atrás de 5 a 10 veces.",
+      image: "22_apoyo_cojin_resistencia.png",
+      series: 2,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Cojín y banda elástica",
+      position: "De pie, con el pie afectado sobre un cojín y el otro con banda elástica."
+    },
+    {
+      id: 23,
+      key: "apoyo_suelo_balon",
+      name: "Apoyo pie en suelo lanzando balón",
+      description:
+        "De pie, descalzo, con el pie afectado apoyado en el suelo mientras la extremidad sana mantiene la rodilla en flexión. Lanzar unas 5-10 veces el balón contra la pared.",
+      image: "23_apoyo_suelo_balon.png",
+      series: 1,
+      reps: 10,
+      secondsPerRep: 5,
+      material: "Balón y pared",
+      position: "De pie, con el pie afectado apoyado en el suelo."
+    }
+  ];
+
+  // Sonidos
+  const soundRepEnd = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+  const soundRestEnd = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+  const soundExerciseEnd = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
+
+  // Estado
+  let currentIndex = 0;
+  let isRunning = false;
+  let timerId = null;
+  let phase = "idle"; // "active", "rest_between_reps", "rest_between_exercises"
+  let remainingSeconds = 0;
+  let currentRep = 1;
+  let totalRepsForExercise = 0;
+
+  // DOM
+  const startScreenEl = document.getElementById("startScreen");
+  const endScreenEl = document.getElementById("endScreen");
+  const appContainerEl = document.getElementById("appContainer");
+
+  const exerciseListEl = document.getElementById("exerciseList");
+  const currentExerciseTitleEl = document.getElementById("currentExerciseTitle");
+  const currentExerciseDescriptionEl = document.getElementById("currentExerciseDescription");
+  const currentExerciseImageEl = document.getElementById("currentExerciseImage");
+  const currentMetaEl = document.getElementById("currentMeta");
+
+  const nextExerciseCardEl = document.getElementById("nextExerciseCard");
+  const nextExerciseDescriptionEl = document.getElementById("nextExerciseDescription");
+  const nextExerciseImageEl = document.getElementById("nextExerciseImage");
+  const nextMetaEl = document.getElementById("nextMeta");
+
+  const timerDisplayEl = document.getElementById("timerDisplay");
+  const phaseTextEl = document.getElementById("phaseText");
+  const progressInfoEl = document.getElementById("progressInfo");
+  const statusBarEl = document.getElementById("statusBar");
+
+  const btnStartPause = document.getElementById("btnStartPause");
+  const btnReset = document.getElementById("btnReset");
+  const btnPrev = document.getElementById("btnPrev");
+  const btnNext = document.getElementById("btnNext");
+
+  // Pantallas
+  function goToRoutine() {
+    startScreenEl.style.display = "none";
+    endScreenEl.style.display = "none";
+    appContainerEl.style.display = "block";
+    if (exercises.length > 0) {
+      selectExercise(0, true);
+    }
+  }
+
+  function showEndScreen() {
+    appContainerEl.style.display = "none";
+    endScreenEl.style.display = "block";
+  }
+
+  function restartRoutine(startImmediately) {
+    endScreenEl.style.display = "none";
+    appContainerEl.style.display = "block";
+    currentIndex = 0;
+    selectExercise(0, true);
+    if (startImmediately) {
+      // Simular pulsar iniciar
+      if (!isRunning) {
+        startFromIdle();
+      }
+    }
+  }
+
+  // Lista de ejercicios
+  function renderExerciseList() {
+    exerciseListEl.innerHTML = "";
+    exercises.forEach((ex, index) => {
+      const item = document.createElement("div");
+      item.className = "exercise-item";
+      item.dataset.index = index;
+
+      const nameSpan = document.createElement("span");
+      nameSpan.textContent = ex.name;
+
+      const metaSmall = document.createElement("small");
+      metaSmall.textContent = `Series: ${ex.series} · Reps: ${ex.reps}`;
+
+      item.appendChild(nameSpan);
+      item.appendChild(metaSmall);
+
+      item.addEventListener("click", () => {
+        selectExercise(index, true);
+      });
+
+      exerciseListEl.appendChild(item);
+    });
+    updateExerciseListHighlight();
+  }
+
+  function updateExerciseListHighlight() {
+    const items = exerciseListEl.querySelectorAll(".exercise-item");
+    items.forEach((item, index) => {
+      item.classList.toggle("active", index === currentIndex);
+    });
+  }
+
+  function selectExercise(index, resetTimer = false) {
+    currentIndex = index;
+    updateExerciseListHighlight();
+    const ex = exercises[currentIndex];
+
+    currentExerciseTitleEl.textContent = ex.name;
+    currentExerciseDescriptionEl.textContent = ex.description;
+    currentExerciseImageEl.src = ex.image;
+    currentExerciseImageEl.style.display = "block";
+
+    currentMetaEl.innerHTML = `
+      <li><span class="meta-label">Series:</span> ${ex.series}</li>
+      <li><span class="meta-label">Repeticiones:</span> ${ex.reps}</li>
+      <li><span class="meta-label">Duración aprox. por repetición:</span> ${ex.secondsPerRep} s</li>
+      <li><span class="meta-label">Material:</span> ${ex.material}</li>
+      <li><span class="meta-label">Posición:</span> ${ex.position}</li>
+    `;
+
+    const next = exercises[currentIndex + 1];
+    if (next) {
+      nextExerciseCardEl.style.display = "block";
+      nextExerciseDescriptionEl.textContent = next.description;
+      nextExerciseImageEl.src = next.image;
+      nextExerciseImageEl.style.display = "block";
+      nextMetaEl.innerHTML = `
+        <li><span class="meta-label">Siguiente:</span> ${next.name}</li>
+        <li><span class="meta-label">Material:</span> ${next.material}</li>
+        <li><span class="meta-label">Posición:</span> ${next.position}</li>
+      `;
+    } else {
+      // Último ejercicio: ocultar tarjeta de siguiente ejercicio
+      nextExerciseCardEl.style.display = "none";
+    }
+
+    totalRepsForExercise = ex.series * ex.reps;
+    if (resetTimer) {
+      resetExerciseState();
+    }
+  }
+
+  function resetExerciseState() {
+    stopTimer();
+    isRunning = false;
+    phase = "idle";
+    currentRep = 1;
+    remainingSeconds = 0;
+    updateTimerDisplay(0);
+    phaseTextEl.textContent = "";
+    progressInfoEl.textContent = "";
+    statusBarEl.textContent = "Listo.";
+    btnStartPause.textContent = "Iniciar";
+  }
+
+  function updateTimerDisplay(seconds) {
+    const s = seconds.toString().padStart(2, "0");
+    timerDisplayEl.textContent = s;
+  }
+
+  function updatePhaseUI() {
+    if (phase === "active") {
+      phaseTextEl.textContent = "Fase activa: mantén la posición o realiza el movimiento.";
+    } else if (phase === "rest_between_reps") {
+      phaseTextEl.textContent = "Descanso entre repeticiones (3 segundos).";
+    } else if (phase === "rest_between_exercises") {
+      phaseTextEl.textContent = "Descanso entre ejercicios (20 segundos).";
+    } else {
+      phaseTextEl.textContent = "";
+    }
+  }
+
+  function updateProgressInfo() {
+    const ex = exercises[currentIndex];
+    progressInfoEl.textContent = `Repetición ${currentRep} de ${ex.reps} · Series: ${ex.series}`;
+  }
+
+  // Temporizador
+  function startTimer() {
+    if (timerId) return;
+    timerId = setInterval(tick, 1000);
+  }
+
+  function stopTimer() {
+    if (timerId) {
+      clearInterval(timerId);
+      timerId = null;
+    }
+  }
+
+  function tick() {
+    if (!isRunning) return;
+    if (remainingSeconds > 0) {
+      remainingSeconds--;
+      updateTimerDisplay(remainingSeconds);
+      return;
+    }
+
+    if (phase === "active") {
+      soundRepEnd.currentTime = 0;
+      soundRepEnd.play().catch(() => {});
+      handleEndOfRep();
+    } else if (phase === "rest_between_reps") {
+      soundRestEnd.currentTime = 0;
+      soundRestEnd.play().catch(() => {});
+      startNextRepOrExercise();
+    } else if (phase === "rest_between_exercises") {
+      soundExerciseEnd.currentTime = 0;
+      soundExerciseEnd.play().catch(() => {});
+      goToNextExerciseAuto();
+    }
+  }
+
+  function handleEndOfRep() {
+    const ex = exercises[currentIndex];
+    const totalReps = ex.series * ex.reps;
+    const currentGlobalRep = currentRep;
+
+    if (currentGlobalRep >= totalReps) {
+      statusBarEl.textContent = "Ejercicio completado. Descanso entre ejercicios (20 s).";
+      soundExerciseEnd.currentTime = 0;
+      soundExerciseEnd.play().catch(() => {});
+      startRestBetweenExercises();
+    } else {
+      statusBarEl.textContent = "Descanso entre repeticiones (3 s).";
+      phase = "rest_between_reps";
+      remainingSeconds = 3;
+      updatePhaseUI();
+      updateTimerDisplay(remainingSeconds);
+    }
+  }
+
+  function startNextRepOrExercise() {
+    const ex = exercises[currentIndex];
+    const totalReps = ex.series * ex.reps;
+
+    if (currentRep < totalReps) {
+      currentRep++;
+      statusBarEl.textContent = "Nueva repetición.";
+      startActivePhase();
+    } else {
+      statusBarEl.textContent = "Ejercicio completado. Descanso entre ejercicios (20 s).";
+      startRestBetweenExercises();
+    }
+  }
+
+  function startActivePhase() {
+    const ex = exercises[currentIndex];
+    phase = "active";
+    remainingSeconds = ex.secondsPerRep;
+    updatePhaseUI();
+    updateTimerDisplay(remainingSeconds);
+    updateProgressInfo();
+  }
+
+  function startRestBetweenExercises() {
+    phase = "rest_between_exercises";
+    remainingSeconds = 20;
+    updatePhaseUI();
+    updateTimerDisplay(remainingSeconds);
+  }
+
+  function goToNextExerciseAuto() {
+    if (currentIndex < exercises.length - 1) {
+      currentIndex++;
+      selectExercise(currentIndex, true);
+      statusBarEl.textContent = "Comienza el siguiente ejercicio.";
+      startActivePhase();
+      isRunning = true;
+      startTimer();
+      btnStartPause.textContent = "Pausar";
+    } else {
+      // Fin de la rutina completa
+      stopTimer();
+      isRunning = false;
+      phase = "idle";
+      updatePhaseUI();
+      statusBarEl.textContent = "Has completado todos los ejercicios.";
+      btnStartPause.textContent = "Iniciar";
+      showEndScreen();
+    }
+  }
+
+  function startFromIdle() {
+    if (!exercises.length) return;
+    if (phase === "idle") {
+      currentRep = 1;
+      const ex = exercises[currentIndex];
+      totalRepsForExercise = ex.series * ex.reps;
+      startActivePhase();
+    }
+    isRunning = true;
+    startTimer();
+    btnStartPause.textContent = "Pausar";
+    statusBarEl.textContent = "Ejercicio en marcha.";
+  }
+
+  // Botones
+  btnStartPause.addEventListener("click", () => {
+    if (!exercises.length) return;
+
+    if (!isRunning) {
+      startFromIdle();
+    } else {
+      isRunning = false;
+      stopTimer();
+      btnStartPause.textContent = "Reanudar";
+      statusBarEl.textContent = "Pausado.";
+    }
+  });
+
+  btnReset.addEventListener("click", () => {
+    resetExerciseState();
+  });
+
+  btnPrev.addEventListener("click", () => {
+    if (currentIndex > 0) {
+      selectExercise(currentIndex - 1, true);
+      statusBarEl.textContent = "Has cambiado al ejercicio anterior.";
+    }
+  });
+
+  btnNext.addEventListener("click", () => {
+    if (currentIndex < exercises.length - 1) {
+      selectExercise(currentIndex + 1, true);
+      statusBarEl.textContent = "Has cambiado al siguiente ejercicio.";
+    }
+  });
+
+  // Inicialización
+  renderExerciseList();
+  if (exercises.length > 0) {
+    selectExercise(0, true);
+  }
+</script>
+</body>
+</html>
