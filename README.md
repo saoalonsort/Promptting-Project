@@ -1,6 +1,6 @@
 ### 🚀 Try the Live Interactive Web Applications:
-- 🟢 **[Launch Version 2 (Final App)](App tobillo/Rehabilitación tobillo versión 1.html)**
-- 🟡 **[Launch Version 1 (Initial Prototype)](App tobillo/Rehabilitación tobillo versión 2.html.html)**
+- 🟢 **[Launch Version 2 (Final App)]([App tobillo/Rehabilitación tobillo versión 1.html](https://github.com/saoalonsort/Promptting-Project/blob/main/App%20tobillo/Rehabilitaci%C3%B3n%20tobillo%20versi%C3%B3n%201.html))**
+- 🟡 **[Launch Version 1 (Initial Prototype)]([App tobillo/Rehabilitación tobillo versión 2.html.html](https://github.com/saoalonsort/Promptting-Project/blob/main/App%20tobillo/Rehabilitaci%C3%B3n%20tobillo%20versi%C3%B3n%202.html))**
 
 After breaking my ankle, my physical therapist gave me a paper guide with exercises. The document had pictures showing how to perform the exercises. Each exercise required between five and ten repetitions, and some required materials such as a towel, a cushion, or a chair. Others required a specific position, such as sitting in a chair, on a bed, or leaning against a wall. Seeing an opportunity to put my learning into practice during the "Introduction to AI & Prompt Engineering" course, I decided to transform that document into an interactive, step-by-step web application using structured prompting.
 The Challenges and the Process:
